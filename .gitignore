@@ -1,0 +1,6 @@
+bin
+.settings
+.build_Debug
+.build_Release
+.cproject
+.project
