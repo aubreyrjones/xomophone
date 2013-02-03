@@ -15,8 +15,26 @@
 #include <math.h>
 #include <print.h>
 #include <xscope.h>
+#include "codec/control.h"
 
 out port led = PORT_LED;
+
+void xscope_user_init(void){
+	xscope_config_io(XSCOPE_IO_TIMED);
+	xscope_register(3,
+			XSCOPE_CONTINUOUS, "SPI - SCLK", XSCOPE_UINT, "D",
+			XSCOPE_CONTINUOUS, "SPI - MOSI", XSCOPE_UINT, "D",
+			XSCOPE_CONTINUOUS, "SPI - CSB", XSCOPE_UINT, "D");
+
+}
+
+CODEC_IF codec = {
+		XS1_CLKBLK_1,
+		XS1_CLKBLK_2,
+		PORT_CODEC_SCLK,
+		PORT_CODEC_MOSI,
+		PORT_CODEC_CSB
+};
 
 void error(out port leds){
 	leds <: 0b1000;
@@ -28,7 +46,7 @@ void delay_us(timer t, unsigned us){
 
 	t :> time;
 
-	while (us){
+	for (; us; --us){
 		time += 100;
 		t when timerafter(time) :> void;
 		--us;
@@ -38,22 +56,31 @@ void delay_us(timer t, unsigned us){
 int main() {
 	timer t;
 
-	led <: 0b0001;
+	codec_init_interface(codec);
+	led <: 1;
 
 	delay_us(t, 500000);
 
-	led <: 0b0011;
+//	while (1){
+//		codec_set_register(codec, 0b1010101, 0b010101010);
+//		//codec_power_up(codec);
+//		delay_us(t, 250000);
+//	}
 
-	//if (!dsp_control_write(DSP_CONTROL, 0x0c, 0)) //power up
-		//error(led);
-	/*if (!dsp_control_write(DSP_CONTROL, 0x0e, 0x03 | 0b01000000))//set output mode
-		error(led);
-	if (!dsp_control_write(DSP_CONTROL, 0x10, 0xa0)) //set sample rate
-		error(led);
-	if (!dsp_control_write(DSP_CONTROL, 0x12, 0x01))
-		error(led);*/
+	codec_reset(codec);
+	delay_us(t, 500000);
 
-	led <: 0b0111;
+
+	codec_power_up(codec);
+	led <: 2;
+	delay_us(t, 250000);
+
+	codec_setup(codec);
+	led <: 3;
+	delay_us(t, 250000);
+
+	codec_start(codec);
+	led <: 4;
 
 	while (1){};
 }
