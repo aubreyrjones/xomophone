@@ -30,6 +30,10 @@ xsi:schemaLocation="http://www.xmos.com http://www.xmos.com">
             <Port Location="XS1_PORT_1P" Name="PORT_SPI_MOSI"/>
 
             <Port Location="XS1_PORT_4F" Name="PORT_LED"/>
+            
+            <Port Location="XS1_PORT_1E" Name="PORT_CODEC_SCLK" />
+            <Port Location="XS1_PORT_1F" Name="PORT_CODEC_MOSI" />
+            <Port Location="XS1_PORT_1G" Name="PORT_CODEC_CSB" />
           </Tile>
         </Node>
       </Nodes>

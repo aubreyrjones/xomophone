@@ -9,7 +9,7 @@ TARGET = XK-1A
 APP_NAME = 
 
 # The USED_MODULES variable lists other module used by the application.
-USED_MODULES = module_pwm_singlebit_port
+USED_MODULES = module_i2c_master
 
 # The flags passed to xcc when building the application
 # You can also set the following to override flags for a particular language:
