@@ -14,7 +14,7 @@ typedef struct {
 	clock dataClk;
     out buffered port:8 sclk;
     out buffered port:8 mosi;
-    out buffered port:1 csb;
+    out port csb;
 } CODEC_IF;
 
 /**

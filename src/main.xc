@@ -20,7 +20,7 @@
 out port led = PORT_LED;
 
 void xscope_user_init(void){
-	xscope_config_io(XSCOPE_IO_TIMED);
+	xscope_config_io(XSCOPE_IO_BASIC);
 	xscope_register(3,
 			XSCOPE_CONTINUOUS, "SPI - SCLK", XSCOPE_UINT, "D",
 			XSCOPE_CONTINUOUS, "SPI - MOSI", XSCOPE_UINT, "D",
@@ -48,7 +48,7 @@ void delay_us(timer t, unsigned us){
 
 	for (; us; --us){
 		time += 100;
-		t when timerafter(time) :> void;
+		t when timerafter(time) :> time;
 		--us;
 	}
 }
@@ -61,15 +61,18 @@ int main() {
 
 	delay_us(t, 500000);
 
-//	while (1){
-//		codec_set_register(codec, 0b1010101, 0b010101010);
-//		//codec_power_up(codec);
-//		delay_us(t, 250000);
-//	}
+	while (1){
+//		codec_reset(codec);
+//		delay_us(t, 500000);
+//		codec_power_up(codec);
+//		delay_us(t, 250000); delay_us(t, 250000); delay_us(t, 250000); delay_us(t, 250000);
+//
+		codec_set_register(codec, 0b111, 0b001000011);
+		delay_us(t, 250000);
+	}
 
 	codec_reset(codec);
 	delay_us(t, 500000);
-
 
 	codec_power_up(codec);
 	led <: 2;
