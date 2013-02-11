@@ -35,6 +35,11 @@ void codec_reset(CODEC_IF& codec_if);
 void codec_power_up(CODEC_IF& codec_if);
 
 /**
+ * Completely power down the CODEC.
+ * */
+void codec_power_down(CODEC_IF& codec_if);
+
+/**
  * Set up the codec to do its job.
  * */
 void codec_setup(CODEC_IF& codec_if);

@@ -53,37 +53,42 @@ void delay_us(timer t, unsigned us){
 	}
 }
 
+
+
 int main() {
 	timer t;
 
 	codec_init_interface(codec);
 	led <: 1;
-
 	delay_us(t, 500000);
-
-	while (1){
-//		codec_reset(codec);
-//		delay_us(t, 500000);
-//		codec_power_up(codec);
-//		delay_us(t, 250000); delay_us(t, 250000); delay_us(t, 250000); delay_us(t, 250000);
-//
-		codec_set_register(codec, 0b111, 0b001000011);
-		delay_us(t, 250000);
-	}
 
 	codec_reset(codec);
+	led <: 2;
 	delay_us(t, 500000);
 
-	codec_power_up(codec);
-	led <: 2;
-	delay_us(t, 250000);
+//#define LOOPIT
+#ifdef LOOPIT
+	while (1){
+#endif
 
-	codec_setup(codec);
+	codec_power_up(codec);
 	led <: 3;
 	delay_us(t, 250000);
 
-	codec_start(codec);
+#ifdef LOOPIT
+		delay_us(t, 250000);
+		delay_us(t, 250000);
+		delay_us(t, 250000);
+	}
+#endif
+
+	codec_setup(codec);
 	led <: 4;
+	delay_us(t, 250000);
+
+	codec_start(codec);
+	led <: 5;
+	delay_us(t, 250000);
 
 	while (1){};
 }
