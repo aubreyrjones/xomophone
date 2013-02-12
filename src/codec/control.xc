@@ -58,9 +58,8 @@ void codec_set_register(CODEC_IF& codec_if, unsigned char reg, unsigned short va
 
 	sync(codec_if.sclk);
 	codec_if.csb <: 1; //latch in data
-	//codec_if.sclk <: 0b10;
-
-	//sync(codec_if.sclk);
+	codec_if.sclk <: 0; //slow down a bit
+	sync(codec_if.sclk);
 
 	clearbuf(codec_if.mosi);
 	stop_clock(codec_if.dataClk);
@@ -73,7 +72,7 @@ void codec_reset(CODEC_IF& codec_if){
 void codec_power_up(CODEC_IF& codec_if){
 	//power up everything except the crystal oscillator and CLKOUT.
 	//this is because we use a self-contained digital clock.
-	codec_set_register(codec_if, 0b110, 0b011000000);
+	codec_set_register(codec_if, 0b110, 0b0);
 }
 
 void codec_power_down(CODEC_IF& codec_if){
@@ -84,8 +83,15 @@ void codec_setup(CODEC_IF& codec_if){
 	//enable master mode, 24-bit samples, and dsp transfer style
 	codec_set_register(codec_if, 0b111, 0b01001011);
 
+	codec_set_register(codec_if, 0, 23);
+	codec_set_register(codec_if, 1, 23);
+
+	codec_set_register(codec_if, 0b100, 0b10);
+	codec_set_register(codec_if, 0b101, 0b1);
+
 	//set unity clock dividers, 48kHz sample both directions, BOSR setting for ~18MHz MCLK.
 	codec_set_register(codec_if, 0b1000, 0b00000010);
+
 
 	//set headphones
 	//codec_set_register(codec_if, 0b10, 0b101111001);
