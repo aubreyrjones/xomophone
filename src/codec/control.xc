@@ -81,7 +81,7 @@ void codec_power_down(CODEC_IF& codec_if){
 
 void codec_setup(CODEC_IF& codec_if){
 	//enable master mode, 24-bit samples, and dsp transfer style
-	codec_set_register(codec_if, 0b111, 0b01001011);
+	codec_set_register(codec_if, 0b111, 0b01001010);
 
 	codec_set_register(codec_if, 0, 23);
 	codec_set_register(codec_if, 1, 23);
